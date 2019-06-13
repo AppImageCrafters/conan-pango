@@ -66,7 +66,7 @@ class PangoConan(ConanFile):
         env["PATH"] = os.getenv("PATH") + ":" + os.path.join(self.deps_cpp_info["glib"].rootpath, "bin")
         env["PKG_CONFIG_PATH"] = env.get("PKG_CONFIG_PATH", "") + ":" + self.build_folder
 
-        configure_args = []
+        configure_args = ['--disable-gtk-doc']
         if self.options.shared:
             configure_args.extend(['--disable-static', '--enable-shared'])
         else:
@@ -74,7 +74,7 @@ class PangoConan(ConanFile):
 
         with tools.environment_append(env):
             os.chdir("%s/pango" % self.build_folder)
-            self.run("NOCONFIGURE=1 ./autogen.sh")
+            self.run("NOCONFIGURE=1 ./autogen.sh --disable-gtk-doc")
             autotools.pic = self.options.fPIC
             autotools.include_paths.extend(os.path.join(s, "harfbuzz") for s in
                                            self.deps_cpp_info["harfbuzz"].include_paths)
